@@ -6,4 +6,4 @@ COPY main.go /go/src/github.com/andy-zhangtao/tiny-srv/main.go
 ADD vendor /go/src/github.com/andy-zhangtao/tiny-srv/vendor
 
 WORKDIR /go/src/github.com/andy-zhangtao/tiny-srv
-ENTRYPOINT ["go","build","-o","tiny-srv"]
+ENTRYPOINT ["go","build","-o","bin/tiny-srv"]
