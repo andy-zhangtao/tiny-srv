@@ -1,0 +1,4 @@
+FROM oraclelinux:latest
+COPY tiny-srv /tiny-srv
+EXPOSE 8000
+ENTRYPOINT ["/tiny-srv"]
