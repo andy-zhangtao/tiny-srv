@@ -1,0 +1,9 @@
+FROM vikings/golang-1.10
+LABEL MAINTAINER=ztao@gmail.com
+
+RUN mkdir -p /go/src/github.com/andy-zhangtao/tiny-srv
+COPY main.go /go/src/github.com/andy-zhangtao/tiny-srv/main.go
+ADD vendor /go/src/github.com/andy-zhangtao/tiny-srv/vendor
+
+WORKDIR /go/src/github.com/andy-zhangtao/tiny-srv
+ENTRYPOINT ["go","build","-o","tiny-srv"]
