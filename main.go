@@ -2,9 +2,12 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"os"
+	"os/signal"
+	"time"
 
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
@@ -15,6 +18,8 @@ const (
 	ModuleName = "I am tiny-srv"
 )
 
+var _VERSION_ string
+
 func init() {
 	logrus.SetFormatter(&logrus.JSONFormatter{})
 
@@ -23,16 +28,26 @@ func init() {
 	logrus.SetOutput(os.Stdout)
 
 	// Only log the warning severity or above.
-	logrus.SetLevel(logrus.InfoLevel)
+	logrus.SetLevel(logrus.DebugLevel)
 }
 
 func main() {
 
+	go func() {
+		for {
+			logrus.WithFields(logrus.Fields{"Entry Signal": true}).Debug(ModuleName)
+			c := make(chan os.Signal, 1)
+			signal.Notify(c)
+			s := <-c
+			fmt.Println("Got signal:", s)
+		}
+	}()
+
 	logrus.WithFields(logrus.Fields{
-		"version": "v0.0.2",
+		"version": _VERSION_,
 		"auther":  "andy-zhangtao",
 		"email":   "ztao8607@gmail.com",
-	})
+	}).Info("Tiny-Srv")
 
 	logrus.WithFields(logrus.Fields{
 		"apis": []string{
@@ -102,5 +117,6 @@ func main() {
 	methodsOk := handlers.AllowedMethods([]string{"GET", "HEAD", "POST", "PUT", "OPTIONS"})
 	headersOk := handlers.AllowedHeaders([]string{"X-Requested-With"})
 	originsOk := handlers.AllowedOrigins([]string{"*"})
+	time.Sleep(45 * time.Second)
 	logrus.Println(http.ListenAndServe(":8000", handlers.CORS(headersOk, originsOk, methodsOk)(r)))
 }
