@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"strconv"
 	"time"
 
 	"github.com/gorilla/handlers"
@@ -19,6 +20,7 @@ const (
 )
 
 var _VERSION_ string
+var sleep time.Duration = 45
 
 func init() {
 	logrus.SetFormatter(&logrus.JSONFormatter{})
@@ -117,6 +119,13 @@ func main() {
 	methodsOk := handlers.AllowedMethods([]string{"GET", "HEAD", "POST", "PUT", "OPTIONS"})
 	headersOk := handlers.AllowedHeaders([]string{"X-Requested-With"})
 	originsOk := handlers.AllowedOrigins([]string{"*"})
-	time.Sleep(45 * time.Second)
+
+	if os.Getenv("SLEEP") != "" {
+		s, err := strconv.ParseInt(os.Getenv("SLEEP"), 10, 64)
+		if err == nil {
+			sleep = time.Duration(s)
+		}
+	}
+	time.Sleep(sleep * time.Second)
 	logrus.Println(http.ListenAndServe(":8000", handlers.CORS(headersOk, originsOk, methodsOk)(r)))
 }
