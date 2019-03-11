@@ -16,9 +16,11 @@ import (
 )
 
 const (
+	// ModuleName  当前服务名称
 	ModuleName = "I am tiny-srv"
 )
 
+// _VERSION_ 服务版本号
 var _VERSION_ string
 var sleep time.Duration = 45
 
@@ -126,6 +128,7 @@ func main() {
 			sleep = time.Duration(s)
 		}
 	}
+
 	time.Sleep(sleep * time.Second)
 	logrus.Println(http.ListenAndServe(":8000", handlers.CORS(headersOk, originsOk, methodsOk)(r)))
 }
