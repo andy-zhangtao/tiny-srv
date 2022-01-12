@@ -1,7 +1,7 @@
 
 .PHONY: build
 name = tiny-srv
-version = v1.2.0
+version = v1.2.1
 
 build:
 	go build -ldflags "-X main._VERSION_=$(shell date +%Y%m%d_%H%M%S)" -o $(name)

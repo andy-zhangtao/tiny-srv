@@ -7,7 +7,6 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
-	"strconv"
 	"time"
 
 	"github.com/gorilla/handlers"
@@ -46,6 +45,16 @@ func main() {
 			fmt.Println("Got signal:", s)
 		}
 	}()
+
+	_r := mux.NewRouter()
+	_r.HandleFunc("/_ping", func(writer http.ResponseWriter, request *http.Request) {
+		logrus.WithFields(logrus.Fields{"url": "/_ping", "Request RemoteAddr": request.RemoteAddr, "Header": request.Header, "Host": request.Host})
+		d, _ := ioutil.ReadAll(request.Body)
+		logrus.WithFields(logrus.Fields{"body": string(d)}).Info(ModuleName)
+		writer.Write([]byte(ModuleName))
+	})
+	//测试多个端口监听场景
+	//go logrus.Println(http.ListenAndServe(":9000", _r))
 
 	logrus.WithFields(logrus.Fields{
 		"version": _VERSION_,
@@ -122,13 +131,13 @@ func main() {
 	headersOk := handlers.AllowedHeaders([]string{"X-Requested-With"})
 	originsOk := handlers.AllowedOrigins([]string{"*"})
 
-	if os.Getenv("SLEEP") != "" {
-		s, err := strconv.ParseInt(os.Getenv("SLEEP"), 10, 64)
-		if err == nil {
-			sleep = time.Duration(s)
-		}
-	}
-
-	time.Sleep(sleep * time.Second)
+	//if os.Getenv("SLEEP") != "" {
+	//	s, err := strconv.ParseInt(os.Getenv("SLEEP"), 10, 64)
+	//	if err == nil {
+	//		sleep = time.Duration(s)
+	//	}
+	//}
+	//
+	//time.Sleep(sleep * time.Second)
 	logrus.Println(http.ListenAndServe(":8000", handlers.CORS(headersOk, originsOk, methodsOk)(r)))
 }
