@@ -1,0 +1,25 @@
+# github.com/gorilla/context v1.1.1
+## explicit
+github.com/gorilla/context
+# github.com/gorilla/handlers v1.4.0
+## explicit
+github.com/gorilla/handlers
+# github.com/gorilla/mux v1.6.2
+## explicit
+github.com/gorilla/mux
+# github.com/sirupsen/logrus v1.0.6
+## explicit
+github.com/sirupsen/logrus
+# github.com/stretchr/testify v1.7.0
+## explicit; go 1.13
+# golang.org/x/crypto v0.0.0-20180830192347-182538f80094
+## explicit
+golang.org/x/crypto/ssh/terminal
+# golang.org/x/sys v0.0.0-20180831094639-fa5fdf94c789
+## explicit
+golang.org/x/sys/unix
+golang.org/x/sys/windows
+# gopkg.in/airbrake/gobrake.v2 v2.0.9
+## explicit
+# gopkg.in/gemnasium/logrus-airbrake-hook.v2 v2.1.2
+## explicit
